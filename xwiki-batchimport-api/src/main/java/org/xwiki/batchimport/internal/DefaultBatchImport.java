@@ -1339,6 +1339,18 @@ public class DefaultBatchImport implements BatchImport
                     newDoc.setParent((String) value);
                 } else if (key.equals("doc.content")) {
                     newDoc.setContent((String) value);
+                } else if (key.equals("doc.tags")){
+
+                    List<String> myList = new ArrayList<String>(Arrays.asList(value.toString().split(",")));
+                    
+                    com.xpn.xwiki.api.Object newTagsObject = newDoc.getObject("XWiki.TagClass");
+                    if (newTagsObject == null) {
+                        newTagsObject = newDoc.newObject("XWiki.TagClass");
+                    }
+                    debug("My 2 cents"+ myList);
+
+                    newTagsObject.set("tags", myList); 
+
                 }
             }
 
@@ -1347,13 +1359,13 @@ public class DefaultBatchImport implements BatchImport
             // an empty value is considered significant or not, which should also apply to properties: for now we
             // overwrite it even with an empty tagList, if the fields for tags is set to something and that something is
             // void, maybe we shouldn't
-            if (fieldsfortags != null && fieldsfortags.size() > 0) {
-                com.xpn.xwiki.api.Object newTagsObject = newDoc.getObject("XWiki.TagClass");
+            /*if (fieldsfortags != null && fieldsfortags.size() > 0) {
+                //com.xpn.xwiki.api.Object newTagsObject = newDoc.getObject("XWiki.TagClass");
                 if (newTagsObject == null) {
                     newTagsObject = newDoc.newObject("XWiki.TagClass");
                 }
                 newTagsObject.set("tags", tagList);
-            }
+            }*/
 
             // set a parent if a parent is empty after import
             // TODO: make this a config parameter
